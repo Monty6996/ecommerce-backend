@@ -3,10 +3,14 @@ const joi = require('joi');
 const schemas = {
 	create: joi.object().keys({
 		nombre: joi.string().required(),
+		apellido: joi.string().required(),
 		password: joi
 			.string()
 			.pattern(/^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
 			.required(),
+		telefono: joi
+			.string()
+			.optional(),
 		email: joi
 			.string()
 			.email({ tlds: { allow: false } })
@@ -20,11 +24,9 @@ const schemas = {
 			})
 			.required(),
 		nombre: joi.string().optional(),
+		apellido: joi.string().optional(),
 		telefono: joi
 			.string()
-			.pattern(
-				/^\s*(?:\+?(\d{1,3}))?([-. (]*(\d{3})[-. )]*)?((\d{3})[-. ]*(\d{2,4})(?:[-.x ]*(\d+))?)\s*$/
-			)
 			.optional(),
 		password: joi
 			.string()
