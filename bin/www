@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+/* eslint-disable import/order */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-shadow */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable vars-on-top */
+/* eslint-disable no-var */
+/* eslint-disable prefer-template */
 
 /**
  * Module dependencies.
@@ -6,7 +13,7 @@
 
 var app = require('../app');
 var debug = require('debug')('polleria-backend:server');
-var http = require('http');
+const http = require('http');
 
 /**
  * Get port from environment and store in Express.

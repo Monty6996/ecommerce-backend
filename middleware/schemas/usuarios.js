@@ -8,9 +8,7 @@ const schemas = {
 			.string()
 			.pattern(/^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
 			.required(),
-		telefono: joi
-			.string()
-			.optional(),
+		telefono: joi.string().optional(),
 		email: joi
 			.string()
 			.email({ tlds: { allow: false } })
@@ -25,12 +23,10 @@ const schemas = {
 			.required(),
 		nombre: joi.string().optional(),
 		apellido: joi.string().optional(),
-		telefono: joi
-			.string()
-			.optional(),
+		telefono: joi.string().optional(),
 		password: joi
 			.string()
-			.pattern(/^(?=.*d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/)
+			.pattern(/^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
 			.optional(),
 		email: joi
 			.string()
