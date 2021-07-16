@@ -6,8 +6,10 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const usersRouter = require('./routes/usuarios');
-const registroRouter = require('./routes/registro');
+const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/productos');
+const categoriasRouter = require('./routes/categorias');
+const marcasRouter = require('./routes/marcas');
 
 const app = express();
 
@@ -21,8 +23,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // RUTAS
 app.use('/users', usersRouter);
-app.use('/registro', registroRouter);
-app.use('/products', productsRouter);
+app.use('/auth', authRouter);
+app.use('/productos', productsRouter);
+app.use('/categorias', categoriasRouter);
+app.use('/marcas', marcasRouter);
 
 
 

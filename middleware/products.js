@@ -1,4 +1,4 @@
-const schemas = require('./schemas/products');
+const schemas = require('./schemas/productos');
 
 const validateCreate = (req, res, next) => {
 	const { error } = schemas.create.validate(req.body);
