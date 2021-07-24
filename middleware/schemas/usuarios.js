@@ -33,6 +33,16 @@ const schemas = {
 			.email({ tlds: { allow: false } })
 			.optional(),
 	}),
+	login: joi.object().keys({
+		email: joi
+			.string()
+			.email({ tlds: { allow: false } })
+			.required(),
+		password: joi
+			.string()
+			.pattern(/^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
+			.required(),
+	}),
 };
 
 module.exports = schemas;

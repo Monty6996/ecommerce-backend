@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-expressions */
-const schemas = require('./schemas/categorias_marcas');
+const { schemas } = require('./schemas/productos');
 
 const validateCreate = (req, res, next) => {
 	const { error } = schemas.create.validate(req.body);

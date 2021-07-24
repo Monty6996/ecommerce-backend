@@ -12,6 +12,8 @@
         "ecmaVersion": 12
     },
     "rules": {
-        "no-unused-expressions": 0
+        "no-unused-expressions": 0,
+        "prefer-const" : 1,
+        "consistent-return": 0
     }
 }

@@ -6,7 +6,6 @@ const {
 	validateCreate,
 	validateModify,
 } = require('../middleware/categorias_marcas');
-const { Router } = require('express');
 
 // *GetAll
 router.get('/', async (req, res) => {
@@ -36,7 +35,7 @@ router.post('/', validateCreate, async (req, res) => {
 		const mensaje = await create(req.body);
 		res.status(201).json(mensaje);
 	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error' });
+		res.sendStatus(500);
 	}
 });
 
@@ -45,7 +44,7 @@ router.put('/', validateModify, async (req, res) => {
 		const mensaje = await update({ id: req.body.id }, req.body);
 		res.status(201).json(mensaje);
 	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error' });
+		res.sendStatus(500);
 	}
 });
 
@@ -54,7 +53,7 @@ router.delete('/', async (req, res) => {
 		const mensaje = await update({ id: req.body.id }, { eliminado: 1 });
 		res.status(200).json(mensaje);
 	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error' });
+		res.sendStatus(500);
 	}
 });
 
