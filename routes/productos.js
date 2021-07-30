@@ -6,7 +6,7 @@ const { numbers } = require('nanoid-dictionary');
 const { validateCreate, validateModify } = require('../middleware/productos');
 const { get, update, create } = require('../models/productos');
 const { createProducto } = require('../services/productos');
-const { verificarToken } = require('../middleware/validaciones');
+const { verificarToken, isAdmin } = require('../middleware/validaciones');
 
 const upload = multer({ dest: './public/tmp' });
 const idproducto = customAlphabet(numbers, 10);
