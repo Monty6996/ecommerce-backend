@@ -6,6 +6,7 @@ const { numbers } = require('nanoid-dictionary');
 const { validateCreate, validateModify } = require('../middleware/productos');
 const { get, update, create } = require('../models/productos');
 const { createProducto } = require('../services/productos');
+const { verificarToken } = require('../middleware/validaciones');
 
 const upload = multer({ dest: './public/tmp' });
 const idproducto = customAlphabet(numbers, 10);
@@ -61,6 +62,8 @@ router.get('/:id', async (req, res) => {
 // Crear un nuevo producto - privado
 router.post(
 	'/',
+	verificarToken,
+	isAdmin,
 	upload.array('imagenes', '12'),
 	validateCreate,
 	async (req, res) => {
@@ -79,7 +82,7 @@ router.post(
 );
 
 // Modificar un producto por id - privado
-router.put('/', validateModify, async (req, res) => {
+router.put('/', verificarToken, isAdmin, validateModify, async (req, res) => {
 	try {
 		const mensaje = await update({ id: req.body.id }, req.body);
 		res.status(200).json(mensaje);
@@ -89,7 +92,7 @@ router.put('/', validateModify, async (req, res) => {
 });
 
 // Eliminar un producto por id - privado
-router.delete('/', async (req, res) => {
+router.delete('/', verificarToken, isAdmin, verificarToken, async (req, res) => {
 	try {
 		const mensaje = await update({ id: req.body.id }, { eliminado: 1 });
 		res.status(200).json(mensaje);
@@ -97,9 +100,5 @@ router.delete('/', async (req, res) => {
 		res.sendStatus(500);
 	}
 });
-
-
-
-
 
 module.exports = router;

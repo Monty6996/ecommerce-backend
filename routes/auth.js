@@ -18,9 +18,12 @@ const registro = async (req, res) => {
 		const [exists] = await model.get({ email });
 		if (exists) {
 			if (exists.eliminado === 0) {
-				res.status(400).json({error:'el usuario ya existe!'});
+				res.status(400).json({ error: 'el usuario ya existe!' });
 			} else {
-				const nuevoUser = await model.update({ id: exists.id }, { eliminado: 0, habilitado: 0, ...req.body});
+				const nuevoUser = await model.update(
+					{ id: exists.id },
+					{ eliminado: 0, habilitado: 0, ...req.body }
+				);
 				res.status(200).json(nuevoUser);
 			}
 		} else {
@@ -53,7 +56,7 @@ const login = async (req, res) => {
 		if (!usuario || usuario.eliminado === 1 || usuario.habilitado === 0) {
 			res.status(404).json({ error: 'El usuario no existe' });
 		} else if (usuario.password === sha1(password)) {
-			const token = createToken({ id: usuario.id});
+			const token = createToken({ id: usuario.id });
 			res.status(200).json({ JWT: token });
 		} else {
 			res.status(400).json({ error: 'email o constraseña incorrecta!' });

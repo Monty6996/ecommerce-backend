@@ -6,6 +6,7 @@ const {
 	validateCreate,
 	validateModify,
 } = require('../middleware/categorias_marcas');
+const { verificarToken, isAdmin } = require('../middleware/validaciones');
 
 // *GetAll
 router.get('/', async (req, res) => {
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-router.post('/', validateCreate, async (req, res) => {
+router.post('/', verificarToken, isAdmin, validateCreate, async (req, res) => {
 	try {
 		const mensaje = await create(req.body);
 		res.status(201).json(mensaje);
@@ -39,7 +40,7 @@ router.post('/', validateCreate, async (req, res) => {
 	}
 });
 
-router.put('/', validateModify, async (req, res) => {
+router.put('/', verificarToken, isAdmin, validateModify, async (req, res) => {
 	try {
 		const mensaje = await update({ id: req.body.id }, req.body);
 		res.status(201).json(mensaje);
@@ -48,7 +49,7 @@ router.put('/', validateModify, async (req, res) => {
 	}
 });
 
-router.delete('/', async (req, res) => {
+router.delete('/', verificarToken, isAdmin, async (req, res) => {
 	try {
 		const mensaje = await update({ id: req.body.id }, { eliminado: 1 });
 		res.status(200).json(mensaje);
