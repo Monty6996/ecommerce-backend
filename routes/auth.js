@@ -67,8 +67,10 @@ const login = async (req, res) => {
 	}
 };
 
+// Registro de usuario - publico
 router.post('/registro', validateCreate, registro);
 
+// Login de usuario email & password - publico
 router.post('/login', validateLogin, login);
 
 module.exports = router;

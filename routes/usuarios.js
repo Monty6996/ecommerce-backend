@@ -37,8 +37,8 @@ router.put(
 	confirmarUsuario,
 	validateModify,
 	async (req, res) => {
-		console.log(req.body)
-		
+		console.log(req.body);
+
 		try {
 			const message = await update({ id: req.params.id }, req.body);
 			res.status(200).json(message);

@@ -1,12 +1,13 @@
 /* eslint-disable no-useless-catch */
-const { nanoid } = require('nanoid');
+// const { nanoid } = require('nanoid');
+const { v4:uid} = require('uuid')
 const fs = require('fs');
 
 const saveFile = ({ mimetype, path }, destFolder = './public/images') => {
 	try {
 		const [, ext] = mimetype.split('/');
-		const uid = nanoid();
-		const fileName = `${uid}.${ext}`;
+		// const uid = nanoid();
+		const fileName = `${uid()}.${ext}`;
 		const dir = `${destFolder}/${fileName}`;
 		fs.createReadStream(path).pipe(fs.createWriteStream(dir));
 		fs.unlink(path, (error) => {

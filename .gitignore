@@ -64,3 +64,5 @@ typings/
 public/images
 public/tmp
 private/
+*.zip
+*.txt

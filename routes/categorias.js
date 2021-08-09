@@ -11,7 +11,7 @@ const { verificarToken, isAdmin } = require('../middleware/validaciones');
 const getAll = async (req, res) => {
 	try {
 		const categorias = await get({ eliminado: 0 });
-		res.status(200).json({ categorias, headers: req.headers });
+		res.status(200).json(categorias);
 	} catch (error) {
 		console.log(error);
 		res.sendStatus(500);

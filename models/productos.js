@@ -22,6 +22,8 @@ const get = (donde) =>
 const create = (obj) => db(tabla).insert(obj);
 const update = (id, obj) => db(tabla).where(id).update(obj);
 
+const getImagen = (uid) => db("productoImagen").where(uid).select(["id"])
 const createimg = (img) => db('productoImagen').insert(img);
+const deleteimg = (uid) => db('productoImagen').where(uid).del();
 
-module.exports = { get, create, update, createimg };
+module.exports = { get, create, update, createimg, deleteimg,getImagen };
