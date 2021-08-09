@@ -10,8 +10,5 @@ const knex = require('knex')({
 	},
 });
 
-knex.on('query', (queryData) => {
-	console.log(queryData.sql);
-});
 
 module.exports = knex;
