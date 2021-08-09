@@ -21,11 +21,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // RUTAS
-app.use('/api/usuarios', usersRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/productos', productsRouter, productoImagenRouter);
-app.use('/api/categorias', categoriasRouter);
-app.use('/api/marcas', marcasRouter);
+app.use('/usuarios', usersRouter);
+app.use('/auth', authRouter);
+app.use('/productos', productsRouter, productoImagenRouter);
+app.use('/categorias', categoriasRouter);
+app.use('/marcas', marcasRouter);
 
 app.use((req, res) => {
 	res.status(404).json({ error: 'Not Found' });
