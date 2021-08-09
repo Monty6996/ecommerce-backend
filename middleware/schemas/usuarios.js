@@ -39,9 +39,7 @@ const schemas = {
 			.email({ tlds: { allow: false } })
 			.required(),
 		password: joi
-			.string()
-			.pattern(/^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/)
-			.required(),
+			.string().required(),
 	}),
 };
 
