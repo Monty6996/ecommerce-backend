@@ -13,7 +13,6 @@ const getAll = async (req, res) => {
 		const marcas = await get({ eliminado: 0 });
 		res.status(200).json(marcas);
 	} catch (error) {
-		console.log(error);
 		res.status(500).json({ error: 'Internal Server Error' });
 	}
 };
@@ -49,7 +48,7 @@ const modificarMarca = async (req, res) => {
 
 const eliminarMarca = async (req, res) => {
 	try {
-		const mensaje = await update({ id: req.body.id }, { eliminado: 1 });
+		const mensaje = await update({ id: req.params.id }, { eliminado: 1 });
 		res.status(200).json(mensaje);
 	} catch (error) {
 		res.sendStatus(500);
@@ -69,6 +68,6 @@ router.post('/', verificarToken, isAdmin, validateCreate, crearMarca);
 router.put('/', verificarToken, isAdmin, validateModify, modificarMarca);
 
 // Eliminar marca por id - Privado - admin
-router.delete('/', verificarToken, isAdmin, eliminarMarca);
+router.delete('/:id', verificarToken, isAdmin, eliminarMarca);
 
 module.exports = router;

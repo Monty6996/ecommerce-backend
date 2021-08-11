@@ -46,7 +46,6 @@ router.get('/', async (req, res) => {
 		}
 		res.status(200).json(unirImagenes(productos));
 	} catch (error) {
-		console.log(error);
 		res.sendStatus(500);
 	}
 });
@@ -62,7 +61,6 @@ router.get('/:id', async (req, res) => {
 			? res.status(200).json(unirImagenes(producto))
 			: res.status(404).json({ error: 'Not Found' });
 	} catch (error) {
-		console.log(error);
 		res.sendStatus(500);
 	}
 });
@@ -83,16 +81,15 @@ router.post(
 			await createProductoImagen(id, req.files);
 			res.status(200).json(id);
 		} catch (error) {
-			console.log(error);
 			res.sendStatus(500);
 		}
 	}
 );
 
 // Modificar un producto por id - privado
-router.put('/:id', verificarToken, isAdmin, validateModify, async (req, res) => {
+router.put('/', verificarToken, isAdmin, validateModify, async (req, res) => {
 	try {
-		const mensaje = await update({ id: req.params.id }, req.body);
+		const mensaje = await update({ id: req.body.id }, req.body);
 		res.status(200).json(mensaje);
 	} catch (error) {
 		res.sendStatus(500);

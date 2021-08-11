@@ -38,7 +38,7 @@ const isAdmin = (req, res, next) => {
 };
 
 const confirmarUsuario = (req, res, next) => {
-	if (req.usuario.admin === 0 && req.params.id !== req.usuario.id)
+	if (req.usuario.admin === 0 && req.body.id !== req.usuario.id)
 		return res.sendStatus(401);
 	next();
 };

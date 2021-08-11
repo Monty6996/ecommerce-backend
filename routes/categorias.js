@@ -13,7 +13,6 @@ const getAll = async (req, res) => {
 		const categorias = await get({ eliminado: 0 });
 		res.status(200).json(categorias);
 	} catch (error) {
-		console.log(error);
 		res.sendStatus(500);
 	}
 };
@@ -21,7 +20,6 @@ const getAll = async (req, res) => {
 const getSingle = async (req, res) => {
 	try {
 		const [categoria] = await get({ eliminado: 0, id: req.params.id });
-		console.log(categoria);
 		categoria
 			? res.status(200).json(categoria)
 			: res.status(404).json({ error: 'Not Found' });
@@ -46,7 +44,6 @@ const createCategoria = async (req, res) => {
 			res.status(422).json({ error: 'La categoria ya existe' });
 		}
 	} catch (error) {
-		console.log(error);
 		res.sendStatus(500);
 	}
 };
@@ -62,7 +59,7 @@ const modifyCategoria = async (req, res) => {
 
 const deleteCategoria = async (req, res) => {
 	try {
-		const mensaje = await update({ id: req.body.id }, { eliminado: 1 });
+		const mensaje = await update({ id: req.params.id }, { eliminado: 1 });
 		res.status(200).json(mensaje);
 	} catch (error) {
 		res.sendStatus(500);
@@ -77,6 +74,6 @@ router.post('/', verificarToken, isAdmin, validateCreate, createCategoria);
 
 router.put('/', verificarToken, isAdmin, validateModify, modifyCategoria);
 
-router.delete('/', verificarToken, isAdmin, deleteCategoria);
+router.delete('/:id', verificarToken, isAdmin, deleteCategoria);
 
 module.exports = router;

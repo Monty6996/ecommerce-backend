@@ -51,7 +51,6 @@ const login = async (req, res) => {
 			'eliminado',
 			'habilitado',
 		]);
-		console.log(usuario);
 
 		if (!usuario || usuario.eliminado === 1 || usuario.habilitado === 0) {
 			res.status(404).json({ error: 'El usuario no existe' });
@@ -62,7 +61,6 @@ const login = async (req, res) => {
 			res.status(400).json({ error: 'email o constraseña incorrecta!' });
 		}
 	} catch (error) {
-		console.log(error);
 		res.status(500).json({ error });
 	}
 };
