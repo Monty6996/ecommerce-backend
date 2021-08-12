@@ -81,8 +81,8 @@ const login = async (req, res) => {
 
 const confirmCorreo = async (req, res) => {
     try {
-        const {confirmacionCorreo} = req.params;
-        const respuesta = await model.update({confirmacionCorreo},{habilitado:1})
+        const {uid} = req.params;
+        const respuesta = await model.update({confirmacionCorreo:uid},{habilitado:1})
         res.status(200).json(respuesta)
     }catch (e) {
         res.status(500).json({error:"Internal Server Error"})
@@ -95,6 +95,6 @@ router.post('/registro', validateCreate, registro);
 // Login de usuario email & password - publico
 router.post('/login', validateLogin, login);
 
-router.get("/confirmacion/:uuid", confirmCorreo)
+router.get("/confirmacion/:uid", confirmCorreo)
 
 module.exports = router;
