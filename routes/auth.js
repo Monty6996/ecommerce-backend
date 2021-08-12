@@ -82,8 +82,8 @@ const login = async (req, res) => {
 const confirmCorreo = async (req, res) => {
     try {
         const {uid} = req.params;
-        const respuesta = await model.update({confirmacionCorreo:uid},{habilitado:1})
-        res.status(200).json(respuesta)
+        await model.update({confirmacionCorreo:uid},{habilitado:1})
+        res.redirect(301,"https://manuelmontanana.com.ar/success");
     }catch (e) {
         res.status(500).json({error:"Internal Server Error"})
     }

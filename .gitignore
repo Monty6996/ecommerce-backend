@@ -67,3 +67,6 @@ private/
 *.zip
 *.txt
 *.sh
+.prettierrc.json
+.eslintrc.json
+.idea/

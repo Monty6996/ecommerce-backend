@@ -31,7 +31,10 @@ const agregarImagen = async (req, res) => {
 		const id = await createProductoImagen(req.params.idProducto, req.files);
 		return res.status(202).json(id);
 	} catch (error) {
-		res.status(500).json({ error: 'Internal Server Error', message: error });
+		res.status(500).json({
+			error: 'Internal Server Error',
+			message: error,
+		});
 		console.log(error);
 	}
 };
@@ -46,7 +49,10 @@ const deleteImagen = async (req, res) => {
 		res.status(200).json(result);
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({ error: 'Internal Server Error', message: error });
+		res.status(500).json({
+			error: 'Internal Server Error',
+			message: error,
+		});
 	}
 };
 

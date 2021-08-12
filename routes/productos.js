@@ -5,8 +5,8 @@ const { customAlphabet } = require('nanoid');
 const { numbers } = require('nanoid-dictionary');
 const { validateCreate, validateModify } = require('../middleware/productos');
 const { get, update, create } = require('../models/productos');
-const { get:getCategoria} = require('../models/categorias')
-const {createProductoImagen } = require('../services/productos');
+const { get: getCategoria } = require('../models/categorias');
+const { createProductoImagen } = require('../services/productos');
 const { verificarToken, isAdmin } = require('../middleware/validaciones');
 
 const upload = multer({ dest: './public/tmp' });
@@ -36,11 +36,17 @@ const unirImagenes = (array) => {
 // Consultar todos los productos - publico
 router.get('/', async (req, res) => {
 	try {
-		let productos
+		let productos;
 		if (req.query.categoria) {
-			const [response] = await getCategoria({ nombre: req.query.categoria },['id'])
-			if (!response) return res.sendStatus(404)
-			productos = await get({idCategoria: response.id, 'productos.eliminado': 0 });
+			const [response] = await getCategoria(
+				{ nombre: req.query.categoria },
+				['id']
+			);
+			if (!response) return res.sendStatus(404);
+			productos = await get({
+				idCategoria: response.id,
+				'productos.eliminado': 0,
+			});
 		} else {
 			productos = await get({ 'productos.eliminado': 0 });
 		}
@@ -57,7 +63,7 @@ router.get('/:id', async (req, res) => {
 			'productos.id': req.params.id,
 			'productos.eliminado': 0,
 		});
-		producto !== []
+		producto.length !== 0
 			? res.status(200).json(unirImagenes(producto))
 			: res.status(404).json({ error: 'Not Found' });
 	} catch (error) {
@@ -74,7 +80,6 @@ router.post(
 	validateCreate,
 	async (req, res) => {
 		try {
-			
 			const id = idproducto();
 			req.body = { id, ...req.body };
 			await create(req.body);
@@ -97,13 +102,22 @@ router.put('/', verificarToken, isAdmin, validateModify, async (req, res) => {
 });
 
 // Eliminar un producto por id - privado
-router.delete('/:id', verificarToken, isAdmin, verificarToken, async (req, res) => {
-	try {
-		const mensaje = await update({ id: req.params.id }, { eliminado: 1 });
-		res.status(200).json(mensaje);
-	} catch (error) {
-		res.sendStatus(500);
+router.delete(
+	'/:id',
+	verificarToken,
+	isAdmin,
+	verificarToken,
+	async (req, res) => {
+		try {
+			const mensaje = await update(
+				{ id: req.params.id },
+				{ eliminado: 1 }
+			);
+			res.status(200).json(mensaje);
+		} catch (error) {
+			res.sendStatus(500);
+		}
 	}
-});
+);
 
 module.exports = router;
