@@ -11,7 +11,7 @@ const schemas = {
 	}),
 
 	modify: joi.object().keys({
-		id: joi.number().integer().min(10).max(10).required(),
+		id: joi.number().integer().positive().required(),
 		nombre: joi.string().optional(),
 		descripcion: joi.string().optional(),
 		precio: joi.number().optional(),
