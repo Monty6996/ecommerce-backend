@@ -9,16 +9,16 @@ const {
     confirmarUsuario,
 } = require('../middleware/validaciones');
 
-router.get('/all', verificarToken, isAdmin, verificarToken, async (req, res) => {
+const getAll = async (req, res) => {
     try {
         const usuarios = await get({eliminado: 0});
         res.status(200).json(usuarios);
     } catch (error) {
         res.sendStatus(500);
     }
-});
+}
 
-router.get('/:id', verificarToken, confirmarUsuario, async (req, res) => {
+const getSingle = async (req, res) => {
     try {
         const [usuario] = await get({id: req.params.id, eliminado: 0});
         usuario
@@ -27,33 +27,42 @@ router.get('/:id', verificarToken, confirmarUsuario, async (req, res) => {
     } catch (error) {
         res.sendStatus(500);
     }
-});
+}
 
-router.put(
-    '/',
-    verificarToken,
-    confirmarUsuario,
-    validateModify,
-    async (req, res) => {
-
-
-        try {
-            const message = await update({id: req.body.id}, req.body);
-            res.status(200).json(message);
-        } catch (error) {
-
-            res.sendStatus(500);
-        }
+const modificarUsuario = async (req, res) => {
+    try {
+        const message = await update({id: req.body.id}, req.body);
+        res.status(200).json(message);
+    } catch (error) {
+        res.sendStatus(500);
     }
-);
+}
 
-router.delete('/:id', verificarToken, confirmarUsuario, async (req, res) => {
+const eliminarUsuario = async (req, res) => {
     try {
         const message = await update({id: req.params.id}, {eliminado: '1'});
         res.status(200).json(message);
     } catch (error) {
         res.sendStatus(500);
     }
-});
+}
+
+// Consultar todos los usuarios - Privado - admin
+router.get('/all', verificarToken, isAdmin, verificarToken, getAll);
+
+// Consultar usuario por su id - publico / consultar usuario por id - privado - admin
+router.get('/:id', verificarToken, confirmarUsuario, getSingle);
+
+// Modificar usuario por su id - publico / Modificar usuario por id - privado - admin
+router.put(
+    '/',
+    verificarToken,
+    confirmarUsuario,
+    validateModify,
+    modificarUsuario
+);
+
+// Eliminar usuario por su id - publico / Eliminar usuario por id - privado - admin
+router.delete('/:id', verificarToken, confirmarUsuario, eliminarUsuario);
 
 module.exports = router;

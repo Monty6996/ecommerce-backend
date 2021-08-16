@@ -36,13 +36,14 @@ const createCategoria = async (req, res) => {
 
 		if (!resp) {
 			const mensaje = await create({ nombre, ...resto });
-			res.status(201).json(mensaje);
-		} else if (resp.eliminado === 1) {
+			return res.status(201).json(mensaje);
+		} 
+		if (resp.eliminado === 1) {
 			await update({ id: resp.id }, { eliminado: false });
-			res.status(201).json(resp.id);
-		} else {
-			res.status(422).json({ error: 'La categoria ya existe' });
-		}
+			return res.status(201).json(resp.id);
+		} 
+			return res.status(422).json({ error: 'La categoria ya existe' });
+		
 	} catch (error) {
 		res.sendStatus(500);
 	}
@@ -74,6 +75,6 @@ router.post('/', verificarToken, isAdmin, validateCreate, createCategoria);
 
 router.put('/', verificarToken, isAdmin, validateModify, modifyCategoria);
 
-router.delete('/:id', verificarToken, isAdmin, deleteCategoria);
+router.delete('/', verificarToken, isAdmin, deleteCategoria);
 
 module.exports = router;

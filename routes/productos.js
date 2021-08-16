@@ -33,8 +33,7 @@ const unirImagenes = (array) => {
 	return temp;
 };
 
-// Consultar todos los productos - publico
-router.get('/', async (req, res) => {
+const getAll = async (req,res) =>{
 	try {
 		let productos;
 		if (req.query.categoria) {
@@ -54,10 +53,9 @@ router.get('/', async (req, res) => {
 	} catch (error) {
 		res.sendStatus(500);
 	}
-});
+}
 
-// Consultar un producto por parametro id - publico
-router.get('/:id', async (req, res) => {
+const getSingle = async (req, res) =>{
 	try {
 		const producto = await get({
 			'productos.id': req.params.id,
@@ -69,7 +67,46 @@ router.get('/:id', async (req, res) => {
 	} catch (error) {
 		res.sendStatus(500);
 	}
-});
+}
+
+const crearProducto = async (req, res) => {
+	try {
+		const id = idproducto();
+		req.body = { id, ...req.body };
+		await create(req.body);
+		await createProductoImagen(id, req.files);
+		res.status(200).json(id);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
+
+const modificarProducto = async (req, res) => {
+	try {
+		const mensaje = await update({ id: req.body.id }, req.body);
+		res.status(200).json(mensaje);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
+
+const eliminarProducto = async (req, res) => {
+	try {
+		const mensaje = await update(
+			{ id: req.params.id },
+			{ eliminado: 1 }
+		);
+		res.status(200).json(mensaje);
+	} catch (error) {
+		res.sendStatus(500);
+	}
+}
+
+// Consultar todos los productos - publico
+router.get('/', getAll);
+
+// Consultar un producto por parametro id - publico
+router.get('/:id', getSingle);
 
 // Crear un nuevo producto - privado
 router.post(
@@ -78,28 +115,11 @@ router.post(
 	isAdmin,
 	upload.array('imagenes', '12'),
 	validateCreate,
-	async (req, res) => {
-		try {
-			const id = idproducto();
-			req.body = { id, ...req.body };
-			await create(req.body);
-			await createProductoImagen(id, req.files);
-			res.status(200).json(id);
-		} catch (error) {
-			res.sendStatus(500);
-		}
-	}
+	crearProducto
 );
 
 // Modificar un producto por id - privado
-router.put('/', verificarToken, isAdmin, validateModify, async (req, res) => {
-	try {
-		const mensaje = await update({ id: req.body.id }, req.body);
-		res.status(200).json(mensaje);
-	} catch (error) {
-		res.sendStatus(500);
-	}
-});
+router.put('/', verificarToken, isAdmin, validateModify, modificarProducto);
 
 // Eliminar un producto por id - privado
 router.delete(
@@ -107,17 +127,7 @@ router.delete(
 	verificarToken,
 	isAdmin,
 	verificarToken,
-	async (req, res) => {
-		try {
-			const mensaje = await update(
-				{ id: req.params.id },
-				{ eliminado: 1 }
-			);
-			res.status(200).json(mensaje);
-		} catch (error) {
-			res.sendStatus(500);
-		}
-	}
+	eliminarProducto
 );
 
 module.exports = router;

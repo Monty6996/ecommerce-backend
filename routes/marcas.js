@@ -30,8 +30,19 @@ const getSingle = async (req, res) => {
 
 const crearMarca = async (req, res) => {
 	try {
-		const mensaje = await create(req.body);
-		res.status(201).json(mensaje);
+		let {nombre , ...resto} = req.body;
+		nombre.toLowerCase();
+		const [resp] = await get({nombre},['id','eliminado']);
+		if(!resp){
+			const mensaje = await create({nombre,...resto});
+			return res.status(201).json(mensaje);
+		}
+		if(res.eliminado === true){
+			await update({id:resp.id}, { eliminado: false })
+			return res.status(201).json(resp.id);
+		}
+			return res.status(422).json({error:'la marca ya existe'});
+
 	} catch (error) {
 		res.sendStatus(500);
 	}
@@ -68,6 +79,6 @@ router.post('/', verificarToken, isAdmin, validateCreate, crearMarca);
 router.put('/', verificarToken, isAdmin, validateModify, modificarMarca);
 
 // Eliminar marca por id - Privado - admin
-router.delete('/:id', verificarToken, isAdmin, eliminarMarca);
+router.delete('/', verificarToken, isAdmin, eliminarMarca);
 
 module.exports = router;
