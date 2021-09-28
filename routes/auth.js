@@ -3,15 +3,13 @@ const express = require('express');
 const router = express.Router();
 const {v4: uuid} = require('uuid');
 const sha1 = require('sha1');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const model = require('../models/usuarios');
 const {send} = require('../services/mail')
 const {validateCreate, validateLogin} = require('../middleware/usuarios');
 
-const privateKey = fs.readFileSync('./private/private.pem');
 const singOptions = {algorithm: 'RS256'};
-const createToken = (payload) => jwt.sign(payload, privateKey, singOptions);
+const createToken = (payload) => jwt.sign(payload, process.env.PRIVATE_KEY, singOptions);
 
 const registro = async (req, res) => {
     try {
@@ -75,6 +73,7 @@ const login = async (req, res) => {
             res.status(400).json({error: 'email o constraseña incorrecta!'});
         }
     } catch (error) {
+
         res.status(500).json({error});
     }
 };
