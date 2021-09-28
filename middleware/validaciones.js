@@ -1,8 +1,5 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
 const { get } = require('../models/usuarios');
-
-const publicKey = fs.readFileSync('./private/public.pem');
 
 // Verifica si el token de un usuario es valido y si ese usuario existe
 const verificarToken = async (req, res, next) => {
@@ -11,7 +8,7 @@ const verificarToken = async (req, res, next) => {
 		return res.status(401).json({ error: 'Auth No Valido' });
 	}
 	try {
-		const payload = jwt.verify(token, publicKey);
+		const payload = jwt.verify(token, process.env.PUBLIC_KEY);
 
 		const [usuario] = await get({ id: payload.id }, ['eliminado', 'admin']);
 
@@ -21,6 +18,7 @@ const verificarToken = async (req, res, next) => {
 		req.usuario = { id: payload.id, admin: usuario.admin };
 		next();
 	} catch (error) {
+
 		res.status(401).json({ error: 'Auth No Valido' });
 	}
 };
