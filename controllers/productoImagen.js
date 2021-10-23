@@ -8,7 +8,7 @@ const mostrarImagen = (req, res) => {
 
 	const url = `${process.env.S3_URL}${req.params.idImagen}`;
 
-	res.redirect(200, url);
+	res.redirect(url);
 };
 
 const agregarImagen = async (req, res) => {
