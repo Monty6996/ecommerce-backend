@@ -5,13 +5,7 @@ const {
 const { get, getImagen } = require('../models/productos');
 
 const mostrarImagen = (req, res) => {
-	// const options = {
-	// 	root: `./public/images`,
-	// };
 
-	// res.sendFile(req.params.idImagen, options, (err) => {
-	// 	err ? res.sendStatus(404) : null;
-	// });
 	const url = `${process.env.S3_URL}${req.params.idImagen}`;
 
 	res.redirect(200, url);
